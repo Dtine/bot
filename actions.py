@@ -1,26 +1,29 @@
-from aiogram import types
 from aiogram.types import Message
-from aiogram.utils.markdown import hbold
-from settings import dp, fatherId, list_of_commands
+from config import dp, fatherUsername, list_of_commands
+from aiogram.filters.command import Command
 
+@dp.message(Command("start"))
+async def command_start_handler(message: Message) -> None:
+    await message.answer(f"Приветик,{message.from_user.full_name}.")
 
+@dp.message(Command("commands"))
+async def command_commands_list(message: Message) -> None:
+    for i in list_of_commands:
+        await message.answer(i)
 
-@dp.message(CommandStart())
-async def command_start_handler(message: Message,) -> None:
-    await message.answer(f"Hello, {hbold(message.from_user.full_name)}!")
+@dp.message(Command("myid"))
+async def command_user_id(message: Message) -> None:
+    user = message.from_user
+    await message.answer(f"Твой ID: {str(user.id)}")
 
 
 @dp.message()
-async def echo_handler(message: types.Message) -> None:
+async def message_handler(message: Message) -> None:
     user = message.from_user
-    if user.id == fatherId: 
+    if str(user.id) == fatherUsername: 
         try:
             await message.answer("Ьуа")
         except TypeError:
             await message.answer("Не тот тип")
     else:
         await message.answer("Иди нахуй")
-##@dp.message(text="/commands")
-##async def echo_commands_list(message: types.Message) -> None:
-    for i in list_of_commands:
-        await message.answer(i)

@@ -2,7 +2,7 @@ import asyncio
 import logging
 import sys
 import actions
-from settings import dp, bot
+from config import dp, bot
 async def main() -> None:
     await dp.start_polling(bot)
 
